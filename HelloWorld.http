@@ -1,0 +1,9 @@
+GET http://localhost:8080/helloworld/java
+Accept: application/json
+
+###
+
+GET http://localhost:8080/helloworld2/java
+Accept: application/json
+
+###
