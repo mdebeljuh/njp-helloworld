@@ -14,6 +14,8 @@ public class HelloWorldMessageUpperGenerator implements HelloWorldMessageGenerat
 
     @Override
     public String generate(String name) {
-        return "Hello " + name.toUpperCase() + "!";
+        String message = "Hello " + (name != null ? name.toUpperCase() : "") + "!";
+        writer.print(message);
+        return message;
     }
 }

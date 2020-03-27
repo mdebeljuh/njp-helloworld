@@ -21,9 +21,9 @@ public class HelloWorldCloneController {
     }
 
     @GetMapping("/helloworld2/{name}")
-    public HelloWorld helloWorld(@PathVariable String name) {
+    public HelloWorldDTO helloWorld(@PathVariable String name) {
         LOGGER.trace("hello world start - {}", name);
-        HelloWorld helloWorld = new HelloWorld(1L, messageGenerator.generate(name));
+        HelloWorldDTO helloWorld = new HelloWorldDTO(1L, messageGenerator.generate(name));
         LOGGER.trace("hello world end - {}", helloWorld);
         return helloWorld;
     }

@@ -1,10 +1,10 @@
 package hr.vsite.njp.helloworld;
 
-public class HelloWorld {
+public class HelloWorldDTO {
     private final Long id;
     private final String message;
 
-    public HelloWorld(Long id, String message) {
+    public HelloWorldDTO(Long id, String message) {
         this.id = id;
         this.message = message;
     }
