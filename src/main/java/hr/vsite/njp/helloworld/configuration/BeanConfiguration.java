@@ -1,6 +1,7 @@
-package hr.vsite.njp.helloworld;
+package hr.vsite.njp.helloworld.configuration;
 
 
+import hr.vsite.njp.helloworld.domain.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
@@ -12,7 +13,7 @@ public class BeanConfiguration {
 //@Primary
 //@Qualifier("UPPER")
     @Profile("UPPER")
-    public HelloWorldMessageGenerator helloWorldMessageNormalGenerator(Writer writer) {
-        return new HelloWorldMessageUpperGenerator(writer);
+    public NameOperation helloWorldMessageNormalGenerator() {
+        return new UpperNameOperation();
     }
 }

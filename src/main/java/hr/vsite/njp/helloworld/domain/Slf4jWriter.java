@@ -1,4 +1,4 @@
-package hr.vsite.njp.helloworld;
+package hr.vsite.njp.helloworld.domain;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

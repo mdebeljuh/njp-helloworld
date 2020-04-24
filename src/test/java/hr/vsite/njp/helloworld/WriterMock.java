@@ -1,5 +1,7 @@
 package hr.vsite.njp.helloworld;
 
+import hr.vsite.njp.helloworld.domain.Writer;
+
 //nije potrebno jer se većina može napraviti Mockito library
 public class WriterMock implements Writer {
     private final boolean raiseException;

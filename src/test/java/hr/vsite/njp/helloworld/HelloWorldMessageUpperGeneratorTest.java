@@ -1,5 +1,9 @@
 package hr.vsite.njp.helloworld;
 
+import hr.vsite.njp.helloworld.configuration.ApplicationConfiguration;
+import hr.vsite.njp.helloworld.domain.HelloWorldTemplateMessageGenerator;
+import hr.vsite.njp.helloworld.domain.UpperNameOperation;
+import hr.vsite.njp.helloworld.domain.Writer;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,7 +11,7 @@ import org.mockito.Mockito;
 
 class HelloWorldMessageUpperGeneratorTest {
 
-    private HelloWorldMessageUpperGenerator generator;
+    private HelloWorldTemplateMessageGenerator generator;
 
     @BeforeEach
     void setUp() {
@@ -17,7 +21,8 @@ class HelloWorldMessageUpperGeneratorTest {
         Writer writer = Mockito.mock(Writer.class);
 //        Mockito.doThrow(RuntimeException.class).when(writer).print(Mockito.anyString());
 //        Mockito.doThrow(RuntimeException.class).when(writer).print("Hello JAVA!");
-        generator = new HelloWorldMessageUpperGenerator(writer);
+        UpperNameOperation nameOperation = new UpperNameOperation();
+        generator = new HelloWorldTemplateMessageGenerator(new ApplicationConfiguration(), nameOperation);
     }
 
     @Test

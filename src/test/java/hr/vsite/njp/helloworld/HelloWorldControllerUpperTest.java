@@ -1,5 +1,6 @@
 package hr.vsite.njp.helloworld;
 
+import hr.vsite.njp.helloworld.infrastructure.rest.HelloWorldDTO;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

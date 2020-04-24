@@ -1,4 +1,4 @@
-package hr.vsite.njp.helloworld;
+package hr.vsite.njp.helloworld.infrastructure.rest;
 
 public class HelloWorldDTO {
     private final Long id;

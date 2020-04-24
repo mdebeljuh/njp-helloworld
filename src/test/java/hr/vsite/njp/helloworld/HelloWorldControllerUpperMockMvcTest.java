@@ -1,5 +1,6 @@
 package hr.vsite.njp.helloworld;
 
+import hr.vsite.njp.helloworld.domain.HelloWorldMessageGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

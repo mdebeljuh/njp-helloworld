@@ -1,4 +1,4 @@
-package hr.vsite.njp.helloworld;
+package hr.vsite.njp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

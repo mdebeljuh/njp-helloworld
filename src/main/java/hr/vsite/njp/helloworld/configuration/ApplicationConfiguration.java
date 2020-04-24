@@ -1,4 +1,4 @@
-package hr.vsite.njp.helloworld;
+package hr.vsite.njp.helloworld.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "my-app-conf")
 public class ApplicationConfiguration {
     private String message;
-    private String helloWorldTemplate;
+    private String helloWorldTemplate = "Hello %s!";
 
     public String getHelloWorldTemplate() {
         return helloWorldTemplate;
