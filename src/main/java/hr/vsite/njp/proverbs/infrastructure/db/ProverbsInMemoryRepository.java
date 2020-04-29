@@ -7,8 +7,10 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
-public class ProverbsInMemoryRepository implements ProverbsRepository {
+//@Repository
+public class ProverbsInMemoryRepository
+//        implements ProverbsRepository
+{
     private final List<String> proverbs;
 
     public ProverbsInMemoryRepository() {
@@ -20,13 +22,13 @@ public class ProverbsInMemoryRepository implements ProverbsRepository {
         this.proverbs.add("aaaa5");
     }
 
-    @Override
+//    @Override
     public ProverbDTO findById(Long id) {
         String proverb = proverbs.get(id.intValue());
         return new ProverbDTO(id, proverb);
     }
 
-    @Override
+//    @Override
     public List<ProverbDTO> findAll() {
         List<ProverbDTO> proverbDTOS = new ArrayList<>();
         for (int i = 0; i < proverbs.size(); i++) {
@@ -35,7 +37,7 @@ public class ProverbsInMemoryRepository implements ProverbsRepository {
         return proverbDTOS;
     }
 
-    @Override
+//    @Override
     public int count() {
         return proverbs.size();
     }

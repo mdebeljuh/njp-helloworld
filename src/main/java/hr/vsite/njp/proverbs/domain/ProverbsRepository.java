@@ -1,13 +1,18 @@
 package hr.vsite.njp.proverbs.domain;
 
-import java.util.List;
+import org.springframework.data.repository.CrudRepository;
 
-public interface ProverbsRepository {
+import java.util.Optional;
 
-    ProverbDTO findById(Long Id);
+public interface ProverbsRepository extends CrudRepository<Proverb, Long> {
 
-    List<ProverbDTO> findAll();
 
-    int count();
+    Optional<Proverb> findByProverbContainsOrIdGreaterThan(String text, Long id);
+
+//    ProverbDTO findById(Long Id);
+//
+//    List<ProverbDTO> findAll();
+//
+//    int count();
 
 }

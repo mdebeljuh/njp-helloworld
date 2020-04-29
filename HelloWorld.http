@@ -1,4 +1,4 @@
-GET http://localhost:8080/proverbs/2
+GET http://localhost:8080/proverbs/1
 Accept: application/json
 
 ###
