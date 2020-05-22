@@ -2,8 +2,7 @@ package hr.vsite.njp.proverbs.domain;
 
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ProverbsManagerImpl implements ProverbsManager {
@@ -16,8 +15,18 @@ public class ProverbsManagerImpl implements ProverbsManager {
 
     @Override
     public List<ProverbDTO> findAll() {
-//        return proverbsRepository.findAll();
-        return null;
+        Iterable<Proverb> proverbs = proverbsRepository.findAll();
+        Iterator<Proverb> proverbsIterator = proverbs.iterator();
+        List<ProverbDTO> proverbDTOS = new LinkedList<>();
+
+        for (Proverb proverb : proverbs) {
+//        while (proverbs.hasNext()){
+//            Proverb proverb = proverbs.next();
+            ProverbDTO proverbDTO = new ProverbDTO(proverb.getId(), proverb.getProverb());
+            proverbDTOS.add(proverbDTO);
+        }
+        return proverbDTOS;
+//        return null;
     }
 
     @Override
@@ -32,10 +41,25 @@ public class ProverbsManagerImpl implements ProverbsManager {
     }
 
     @Override
+    public void save(ProverbDTO proverbDto) {
+        Proverb proverb = new Proverb();
+        proverb.setId(proverbDto.getId());
+        proverb.setProverb(proverbDto.getProverb());
+        proverbsRepository.save(proverb);
+    }
+
+    @Override
+    public void delete(Long id) {
+        proverbsRepository.deleteById(id);
+    }
+
+    @Override
     public Optional<ProverbDTO> random() {
-//        int count = proverbsRepository.count();
-//        int id = new Random().nextInt(count);
-//        return proverbsRepository.findById((long) id);
-        return null;
+        Long id = proverbsRepository.randomId();
+        return proverbsRepository.findById( id)
+                .map(prov -> new ProverbDTO(prov.getId(), prov.getProverb()));
+
+       // "SELECT id FROM proverb " +
+       //         "OFFSET floor(random()*(select count(*) from proverb)) LIMIT 1";
     }
 }

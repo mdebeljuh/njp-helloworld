@@ -8,5 +8,9 @@ public interface ProverbsManager {
 
     Optional<ProverbDTO> findOne(Long id);
 
+    void save(ProverbDTO proverb);
+
+    void delete(Long id);
+
     Optional<ProverbDTO> random();
 }
