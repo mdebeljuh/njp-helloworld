@@ -1,8 +1,9 @@
 package hr.vsite.njp.proverbs.infrastructure.rest;
 
-import hr.vsite.njp.proverbs.domain.Proverb;
 import hr.vsite.njp.proverbs.domain.ProverbDTO;
 import hr.vsite.njp.proverbs.domain.ProverbsManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 
 @RestController
 public class ProverbsService {
+    private final static Logger LOGGER = LoggerFactory.getLogger(ProverbsService.class);
 
     private final ProverbsManager proverbsManager;
 
@@ -19,7 +21,7 @@ public class ProverbsService {
     }
 
 
-    private ProverbsRestDTO convert(ProverbDTO proverb){
+    private ProverbsRestDTO convert(ProverbDTO proverb) {
         ProverbsRestDTO dto = new ProverbsRestDTO();
         dto.setId(proverb.getId());
         dto.setProverb(proverb.getProverb());
@@ -30,9 +32,18 @@ public class ProverbsService {
     public List<ProverbsRestDTO> allProverbsRestDTO() {
         return proverbsManager
                 .findAll()
-                .stream().map(p->{
+                .stream().map(p -> {
                     return convert(p);
-        }).collect(Collectors.toList());
+                }).collect(Collectors.toList());
+    }
+
+    @GetMapping("/proverbs/custom")
+    public List<ProverbsRestDTO> customProverbsRestDTO(@RequestParam String text,
+                                                       @RequestParam Integer type) {
+        return proverbsManager
+                .findCustomBy(text, type)
+                .stream().map(this::convert)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/proverbs/{id}")
@@ -41,9 +52,15 @@ public class ProverbsService {
         return proverbDTO.map(p -> convert(p));
     }
 
+//    @GetMapping("/proverbs/random")
+//    public Optional<ProverbsRestDTO> randomProverbsRestDTO() {
+//        Optional<ProverbDTO> proverbDTO = proverbsManager.random();
+//        return proverbDTO.map(this::convert);
+//    }
+
     @GetMapping("/proverbs/random")
-    public Optional<ProverbsRestDTO> randomProverbsRestDTO() {
-        Optional<ProverbDTO> proverbDTO = proverbsManager.random();
+    public Optional<ProverbsRestDTO> randomProverbsByParamRestDTO(@RequestParam Integer type) {
+        Optional<ProverbDTO> proverbDTO = proverbsManager.random(type);
         return proverbDTO.map(this::convert);
     }
 

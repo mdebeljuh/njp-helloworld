@@ -4,6 +4,9 @@ public class ProverbDTO {
     private Long id;
     private String proverb;
 
+    public ProverbDTO() {
+    }
+
     public ProverbDTO(Long id, String proverb) {
         this.id = id;
         this.proverb = proverb;

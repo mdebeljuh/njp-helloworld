@@ -6,6 +6,8 @@ import java.util.Optional;
 public interface ProverbsManager {
     List<ProverbDTO> findAll();
 
+    List<ProverbDTO> findCustomBy(String text, Integer type);
+
     Optional<ProverbDTO> findOne(Long id);
 
     void save(ProverbDTO proverb);
@@ -13,4 +15,5 @@ public interface ProverbsManager {
     void delete(Long id);
 
     Optional<ProverbDTO> random();
+    Optional<ProverbDTO> random(Integer i);
 }

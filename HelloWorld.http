@@ -13,11 +13,11 @@ Accept: application/json
 ###
 
 ### Send POST request with json body
-PUT http://localhost:8080/proverbs/99
+PUT http://localhost:8080/proverbs/100
 Content-Type: application/json
 
 {
-  "proverb": "content"
+  "proverb": "content2"
 }
 
 
@@ -39,5 +39,9 @@ GET http://localhost:8080/proverbs
 Content-Type: application/json
 
 ### Send GET request with json body
-GET http://localhost:8080/proverbs/random
+GET http://localhost:8080/proverbs/random?type=2
+Content-Type: application/json
+
+### Send GET request with json body
+GET http://localhost:8080/proverbs/custom?text=content&type=8
 Content-Type: application/json

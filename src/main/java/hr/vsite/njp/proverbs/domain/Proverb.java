@@ -1,21 +1,23 @@
 package hr.vsite.njp.proverbs.domain;
 
+import hr.vsite.njp.GenId;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
 //@Table(name="adsd")
 public class Proverb {
     @Id
-    @GeneratedValue
+    @GenericGenerator(name = "genId", strategy = GenId.CLASS_NAME)
+    @GeneratedValue(generator = "genId")
+//    @GeneratedValue
     private Long id;
     @Column(length = 2000)
     private String proverb;
-
 
     public Long getId() {
         return id;
