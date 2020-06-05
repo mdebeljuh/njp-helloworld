@@ -17,7 +17,7 @@ PUT http://localhost:8080/proverbs/100
 Content-Type: application/json
 
 {
-  "proverb": "content2"
+  "proverb": "content4 content4 content4 content4 content4 content4 content4 content4 content4 content4 content4 content4 content4 content4 "
 }
 
 
@@ -30,7 +30,7 @@ Content-Type: application/json
 }
 
 ### Send GET request with json body
-GET http://localhost:8080/proverbs/99
+GET http://localhost:8080/proverbs/100
 Content-Type: application/json
 
 

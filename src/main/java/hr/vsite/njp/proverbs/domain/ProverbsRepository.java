@@ -1,10 +1,12 @@
 package hr.vsite.njp.proverbs.domain;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface ProverbsRepository extends CrudRepository<Proverb, Long>, CustomProverbsRepository {
+public interface ProverbsRepository extends
+        JpaRepository<Proverb, Long>,
+        CustomProverbsRepository {
 
 
     Optional<Proverb> findByProverbContainsOrIdGreaterThan(String text, Long id);

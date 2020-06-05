@@ -3,7 +3,10 @@ package hr.vsite.njp.proverbs.domain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,10 +16,12 @@ public class ProverbsManagerImpl implements ProverbsManager {
 
     private final ProverbsRepository proverbsRepository;
     private final ProverbMapper proverbMapper;
+    private final EntityManager entityManager;
 
-    public ProverbsManagerImpl(ProverbsRepository proverbsRepository, ProverbMapper proverbMapper) {
+    public ProverbsManagerImpl(ProverbsRepository proverbsRepository, ProverbMapper proverbMapper, EntityManager entityManager) {
         this.proverbsRepository = proverbsRepository;
         this.proverbMapper = proverbMapper;
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -38,9 +43,17 @@ public class ProverbsManagerImpl implements ProverbsManager {
     }
 
     @Override
+//    @Transactional(readOnly = true) // (2) isto kao da i nema aktivne transakcije
+    @Transactional() // (1) aktivne transakcije
     public Optional<ProverbDTO> findOne(Long id) {
         proverbsRepository.findByProverbContainsOrIdGreaterThan("aa", (long) 12);
-        return proverbsRepository.findById(id).map(proverbMapper::toProverbDTO);
+//        return proverbsRepository.findById(id).map(proverbMapper::toProverbDTO);
+        Optional<Proverb> proverbOptional =  proverbsRepository.findById(id);
+        Proverb p = proverbOptional.get();
+//        entityManager.detach(p);
+        p.setProverb("Read modified2"); // ako su aktivne transakcije i
+                                        // ako nije napravljen detach tada ce se i ovo spremiti
+        return proverbOptional.map(proverbMapper::toProverbDTO);
 
 //        Optional<Proverb> proverb = proverbsRepository.findById(id);
 //        Optional<ProverbDTO> proverbDTO = proverb.map(prov -> new ProverbDTO(prov.getId(), prov.getProverb()));
@@ -51,11 +64,28 @@ public class ProverbsManagerImpl implements ProverbsManager {
     }
 
     @Override
+    @Transactional
     public void save(ProverbDTO proverbDto) {
 //        Proverb proverb = new Proverb();
 //        proverb.setId(proverbDto.getId());
 //        proverb.setProverb(proverbDto.getProverb());
-        proverbsRepository.save(proverbMapper.fromProverbDTO(proverbDto));
+        Proverb converted = proverbMapper.fromProverbDTO(proverbDto);
+        Proverb pFromSaved =
+                proverbsRepository.save(converted);
+
+//        entityManager.flush();
+        converted.setProverb("Converted Proverb"); //nece se spremiti jer nije povezano na entity managera
+        pFromSaved.setProverb("From saved proverb"); // ova promjena ce se spremiti
+        if (proverbDto.getId()!=null) {
+            Optional<Proverb> drugi = proverbsRepository.findById(1L);
+            if (drugi.isPresent()) {
+                Proverb p2 = drugi.get();
+                p2.setProverb("also changed"); // i ovo ce se spremiti jer entiti manager prati tu instancu
+            }
+        }
+
+        LOGGER.info("Done saving");
+//        entityManager.flush();
     }
 
     @Override

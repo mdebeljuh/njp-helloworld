@@ -4,6 +4,7 @@ import hr.vsite.njp.proverbs.domain.ProverbDTO;
 import hr.vsite.njp.proverbs.domain.ProverbsManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -66,9 +67,11 @@ public class ProverbsService {
 
 
     @PutMapping("/proverbs/{id}")
+    @Transactional
     public void saveProverb(@PathVariable(name = "id") Long id, @RequestBody ProverbsRestDTO proverbDTO) {
         ProverbDTO proverb = new ProverbDTO(id, proverbDTO.getProverb());
         proverbsManager.save(proverb);
+        LOGGER.info("End Controller");
     }
 
     @DeleteMapping("/proverbs/{id}")
