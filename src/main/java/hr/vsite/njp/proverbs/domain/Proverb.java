@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @Entity
 //@Table(name="adsd")
@@ -17,6 +18,7 @@ public class Proverb {
 //    @GeneratedValue
     private Long id;
     @Column(length = 2000)
+    @NotNull
     private String proverb;
 
     public Long getId() {

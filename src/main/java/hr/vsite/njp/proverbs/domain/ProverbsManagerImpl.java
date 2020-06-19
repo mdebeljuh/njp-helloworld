@@ -3,14 +3,17 @@ package hr.vsite.njp.proverbs.domain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.persistence.EntityManager;
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 public class ProverbsManagerImpl implements ProverbsManager {
     private final static Logger LOGGER = LoggerFactory.getLogger(ProverbsManagerImpl.class);
 
@@ -48,11 +51,11 @@ public class ProverbsManagerImpl implements ProverbsManager {
     public Optional<ProverbDTO> findOne(Long id) {
         proverbsRepository.findByProverbContainsOrIdGreaterThan("aa", (long) 12);
 //        return proverbsRepository.findById(id).map(proverbMapper::toProverbDTO);
-        Optional<Proverb> proverbOptional =  proverbsRepository.findById(id);
+        Optional<Proverb> proverbOptional = proverbsRepository.findById(id);
         Proverb p = proverbOptional.get();
 //        entityManager.detach(p);
         p.setProverb("Read modified2"); // ako su aktivne transakcije i
-                                        // ako nije napravljen detach tada ce se i ovo spremiti
+        // ako nije napravljen detach tada ce se i ovo spremiti
         return proverbOptional.map(proverbMapper::toProverbDTO);
 
 //        Optional<Proverb> proverb = proverbsRepository.findById(id);
@@ -64,8 +67,11 @@ public class ProverbsManagerImpl implements ProverbsManager {
     }
 
     @Override
-    @Transactional
-    public void save(ProverbDTO proverbDto) {
+    @Transactional(
+//            propagation = Propagation.REQUIRES_NEW,
+            rollbackFor = Exception.class
+    )
+    public void save(ProverbDTO proverbDto) throws Exception {
 //        Proverb proverb = new Proverb();
 //        proverb.setId(proverbDto.getId());
 //        proverb.setProverb(proverbDto.getProverb());
@@ -73,20 +79,44 @@ public class ProverbsManagerImpl implements ProverbsManager {
         Proverb pFromSaved =
                 proverbsRepository.save(converted);
 
-//        entityManager.flush();
         converted.setProverb("Converted Proverb"); //nece se spremiti jer nije povezano na entity managera
         pFromSaved.setProverb("From saved proverb"); // ova promjena ce se spremiti
-        if (proverbDto.getId()!=null) {
+        if (proverbDto.getId() != null) {
             Optional<Proverb> drugi = proverbsRepository.findById(1L);
             if (drugi.isPresent()) {
                 Proverb p2 = drugi.get();
                 p2.setProverb("also changed"); // i ovo ce se spremiti jer entiti manager prati tu instancu
             }
         }
+        saveNewInternal();
 
+//        entityManager.flush();
         LOGGER.info("Done saving");
+
+        //rollback
+        TransactionStatus transactionStatus =
+                TransactionAspectSupport.currentTransactionStatus();
+        if (pFromSaved.getId()>2){
+//            transactionStatus.setRollbackOnly();
+            LOGGER.info("Rollback");
+            throw new RuntimeException();
+        }
+
+//        throw new Exception();
+
 //        entityManager.flush();
     }
+
+    @Transactional(
+            propagation = Propagation.REQUIRES_NEW
+//            rollbackFor = Exception.class
+    )
+    public void saveNewInternal() throws Exception {
+        Proverb proverb = new Proverb();
+        proverb.setProverb("Internal saved");
+        proverbsRepository.save(proverb);
+    }
+
 
     @Override
     public void delete(Long id) {

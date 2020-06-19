@@ -10,7 +10,7 @@ public interface ProverbsManager {
 
     Optional<ProverbDTO> findOne(Long id);
 
-    void save(ProverbDTO proverb);
+    void save(ProverbDTO proverb) throws Exception;
 
     void delete(Long id);
 

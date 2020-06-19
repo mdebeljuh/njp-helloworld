@@ -1,12 +1,17 @@
 package hr.vsite.njp.proverbs.infrastructure.rest;
 
+import hr.vsite.njp.proverbs.domain.Proverb;
 import hr.vsite.njp.proverbs.domain.ProverbDTO;
 import hr.vsite.njp.proverbs.domain.ProverbsManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,7 +25,6 @@ public class ProverbsService {
     public ProverbsService(ProverbsManager proverbsManager) {
         this.proverbsManager = proverbsManager;
     }
-
 
     private ProverbsRestDTO convert(ProverbDTO proverb) {
         ProverbsRestDTO dto = new ProverbsRestDTO();
@@ -67,8 +71,7 @@ public class ProverbsService {
 
 
     @PutMapping("/proverbs/{id}")
-    @Transactional
-    public void saveProverb(@PathVariable(name = "id") Long id, @RequestBody ProverbsRestDTO proverbDTO) {
+    public void saveProverb(@PathVariable(name = "id") Long id, @RequestBody ProverbsRestDTO proverbDTO) throws Exception {
         ProverbDTO proverb = new ProverbDTO(id, proverbDTO.getProverb());
         proverbsManager.save(proverb);
         LOGGER.info("End Controller");
@@ -80,9 +83,20 @@ public class ProverbsService {
     }
 
     @PostMapping("/proverbs")
+    @Transactional
     public void saveProverb(@RequestBody ProverbsRestDTO proverbDTO) {
         ProverbDTO proverb = new ProverbDTO(proverbDTO.getId(), proverbDTO.getProverb());
-        proverbsManager.save(proverb);
+        TransactionStatus  transactionStatus =
+                TransactionAspectSupport.currentTransactionStatus();
+        try {
+            proverbsManager.save(proverb);
+//            transactionStatus.setRollbackOnly();
+            LOGGER.info("Test");
+        } catch (RuntimeException e) {
+            LOGGER.warn("Handled RuntimeException", e);
+        } catch (Exception e) {
+            LOGGER.warn("Exception happened", e);
+        }
     }
 
     /*
