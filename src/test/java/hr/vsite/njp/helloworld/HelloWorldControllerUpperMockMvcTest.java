@@ -1,6 +1,8 @@
 package hr.vsite.njp.helloworld;
 
 import hr.vsite.njp.helloworld.domain.HelloWorldMessageGenerator;
+import hr.vsite.njp.helloworld.infrastructure.rest.HelloWorldController;
+import hr.vsite.njp.proverbs.domain.ProverbsManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
         "UPPER"
 )
 @ExtendWith(value = SpringExtension.class)
-@WebMvcTest
+@WebMvcTest(HelloWorldController.class)
 class HelloWorldControllerUpperMockMvcTest {
 
     @Autowired
@@ -29,6 +31,9 @@ class HelloWorldControllerUpperMockMvcTest {
 
     @MockBean
     private HelloWorldMessageGenerator helloWorldMessageGenerator;
+
+//    @MockBean
+//    private ProverbsManager proverbsManager;
 
     @BeforeEach
     void setUp() {

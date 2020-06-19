@@ -22,7 +22,7 @@ public class HelloWorldController {
 //        messageGenerator = null;
 //    }
 
-     @Autowired
+    @Autowired
     public HelloWorldController(
 //            @Qualifier("UPPER")
             HelloWorldMessageGenerator messageGenerator

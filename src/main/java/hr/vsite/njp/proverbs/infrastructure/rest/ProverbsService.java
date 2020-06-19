@@ -1,22 +1,19 @@
 package hr.vsite.njp.proverbs.infrastructure.rest;
 
-import hr.vsite.njp.proverbs.domain.Proverb;
 import hr.vsite.njp.proverbs.domain.ProverbDTO;
 import hr.vsite.njp.proverbs.domain.ProverbsManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@RestController
+//@RestController
 public class ProverbsService {
     private final static Logger LOGGER = LoggerFactory.getLogger(ProverbsService.class);
 
@@ -86,7 +83,7 @@ public class ProverbsService {
     @Transactional
     public void saveProverb(@RequestBody ProverbsRestDTO proverbDTO) {
         ProverbDTO proverb = new ProverbDTO(proverbDTO.getId(), proverbDTO.getProverb());
-        TransactionStatus  transactionStatus =
+        TransactionStatus transactionStatus =
                 TransactionAspectSupport.currentTransactionStatus();
         try {
             proverbsManager.save(proverb);

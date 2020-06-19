@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableConfigurationProperties
-@EnableJpaRepositories()
 public class HelloWorldApplication {
 
 	public static void main(String[] args) {

@@ -113,6 +113,7 @@ public class ProverbsManagerImpl implements ProverbsManager {
     )
     public void saveNewInternal() throws Exception {
         Proverb proverb = new Proverb();
+        proverb.setId(9999L);
         proverb.setProverb("Internal saved");
         proverbsRepository.save(proverb);
     }
