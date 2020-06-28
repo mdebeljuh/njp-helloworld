@@ -49,12 +49,12 @@ public class ProverbsManagerImpl implements ProverbsManager {
 //    @Transactional(readOnly = true) // (2) isto kao da i nema aktivne transakcije
     @Transactional() // (1) aktivne transakcije
     public Optional<ProverbDTO> findOne(Long id) {
-        proverbsRepository.findByProverbContainsOrIdGreaterThan("aa", (long) 12);
+//        proverbsRepository.findByProverbContainsOrIdGreaterThan("aa", (long) 12);
 //        return proverbsRepository.findById(id).map(proverbMapper::toProverbDTO);
         Optional<Proverb> proverbOptional = proverbsRepository.findById(id);
-        Proverb p = proverbOptional.get();
-//        entityManager.detach(p);
-        p.setProverb("Read modified2"); // ako su aktivne transakcije i
+//        Proverb p = proverbOptional.get();
+////        entityManager.detach(p);
+//        p.setProverb("Read modified2"); // ako su aktivne transakcije i
         // ako nije napravljen detach tada ce se i ovo spremiti
         return proverbOptional.map(proverbMapper::toProverbDTO);
 
